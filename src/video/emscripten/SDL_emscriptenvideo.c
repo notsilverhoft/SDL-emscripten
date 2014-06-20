@@ -24,6 +24,7 @@
 
 #include "SDL_video.h"
 #include "SDL_mouse.h"
+#include "SDL_syswm.h"
 #include "../SDL_sysvideo.h"
 #include "../SDL_pixels_c.h"
 #include "../SDL_egl_c.h"
@@ -46,6 +47,7 @@ static int Emscripten_CreateWindow(_THIS, SDL_Window * window);
 static void Emscripten_SetWindowSize(_THIS, SDL_Window * window);
 static void Emscripten_DestroyWindow(_THIS, SDL_Window * window);
 static void Emscripten_SetWindowFullscreen(_THIS, SDL_Window * window, SDL_VideoDisplay * display, SDL_bool fullscreen);
+static SDL_bool Emscripten_GetWindowWMInfo(_THIS, SDL_Window * window, SDL_SysWMinfo * info);
 static void Emscripten_PumpEvents(_THIS);
 
 
@@ -99,6 +101,7 @@ Emscripten_CreateDevice(int devindex)
     device->SetWindowGrab = Emscripten_SetWindowGrab;*/
     device->DestroyWindow = Emscripten_DestroyWindow;
     device->SetWindowFullscreen = Emscripten_SetWindowFullscreen;
+    device->GetWindowWMInfo = Emscripten_GetWindowWMInfo;
 
     device->CreateWindowFramebuffer = Emscripten_CreateWindowFramebuffer;
     device->UpdateWindowFramebuffer = Emscripten_UpdateWindowFramebuffer;
@@ -253,6 +256,20 @@ Emscripten_SetWindowFullscreen(_THIS, SDL_Window * window, SDL_VideoDisplay * di
         }
         else
             emscripten_exit_fullscreen();
+    }
+}
+
+static SDL_bool
+Emscripten_GetWindowWMInfo(_THIS, SDL_Window * window, SDL_SysWMinfo * info)
+{
+    if (info->version.major == SDL_MAJOR_VERSION &&
+        info->version.minor == SDL_MINOR_VERSION) {
+        info->subsystem = SDL_SYSWM_EMSCRIPTEN;
+        return SDL_TRUE;
+    } else {
+        SDL_SetError("Application not compiled with SDL %d.%d\n",
+                     SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
+        return SDL_FALSE;
     }
 }
 
