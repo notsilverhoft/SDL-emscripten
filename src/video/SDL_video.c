@@ -3261,6 +3261,9 @@ SDL_IsScreenKeyboardShown(SDL_Window *window)
 #if SDL_VIDEO_DRIVER_X11
 #include "x11/SDL_x11messagebox.h"
 #endif
+#if SDL_VIDEO_DRIVER_EMSCRIPTEN
+#include "emscripten/SDL_emscriptenmessagebox.h"
+#endif
 
 static SDL_bool SDL_MessageboxValidForDriver(const SDL_MessageBoxData *messageboxdata, SDL_SYSWM_TYPE drivertype)
 {
@@ -3336,6 +3339,14 @@ SDL_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid)
     if (retval == -1 &&
         SDL_MessageboxValidForDriver(messageboxdata, SDL_SYSWM_X11) &&
         X11_ShowMessageBox(messageboxdata, buttonid) == 0) {
+        retval = 0;
+    }
+#endif
+#if SDL_VIDEO_DRIVER_EMSCRIPTEN
+    if (retval == -1 &&
+        // change this
+        SDL_MessageboxValidForDriver(messageboxdata, SDL_SYSWM_EMSCRIPTEN) &&
+        Emscripten_ShowMessageBox(messageboxdata, buttonid) == 0) {
         retval = 0;
     }
 #endif
