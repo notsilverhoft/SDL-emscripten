@@ -493,7 +493,7 @@ Emscripten_RegisterEventHandlers(SDL_WindowData *data)
 
     emscripten_set_fullscreenchange_callback("#document", data, 0, Emscripten_HandleFullscreenChange);
 
-    emscripten_set_resize_callback("#window", data, 0, Emscripten_HandleResize);
+    emscripten_set_resize_callback("#canvas", data, 0, Emscripten_HandleResize);
 }
 
 void
@@ -519,7 +519,7 @@ Emscripten_UnregisterEventHandlers(SDL_WindowData *data)
 
     emscripten_set_fullscreenchange_callback("#document", NULL, 0, NULL);
 
-    emscripten_set_resize_callback("#window", NULL, 0, NULL);
+    emscripten_set_resize_callback("#canvas", NULL, 0, NULL);
 }
 
 #endif /* SDL_VIDEO_DRIVER_EMSCRIPTEN */
