@@ -448,7 +448,6 @@ Emscripten_HandleResize(int eventType, const EmscriptenUiEvent *uiEvent, void *u
     {
         if(window_data->window->flags & SDL_WINDOW_RESIZABLE)
         {
-            emscripten_set_canvas_size(uiEvent->windowInnerWidth, uiEvent->windowInnerHeight);
             SDL_SendWindowEvent(window_data->window, SDL_WINDOWEVENT_RESIZED, uiEvent->windowInnerWidth, uiEvent->windowInnerHeight);
         }
     }
@@ -463,7 +462,6 @@ Emscripten_HandleResize(int eventType, const EmscriptenUiEvent *uiEvent, void *u
                 return Module['canvas'].clientHeight;
             });
 
-            emscripten_set_canvas_size(w, h);
             SDL_SendWindowEvent(window_data->window, SDL_WINDOWEVENT_RESIZED, w, h);
         }
     }
