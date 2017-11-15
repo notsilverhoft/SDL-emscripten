@@ -269,7 +269,7 @@ LRESULT DIB_HandleMessage(_THIS, HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 				TranslateKey(wParam,HIWORD(lParam),&keysym,0));
 		}
 		return(0);
-#if defined(SC_SCREENSAVE) && defined(SC_MONITORPOWER)
+#if defined(SC_SCREENSAVE) && defined(SC_MONITORPOWER) && SDL_VIDEO_DRIVER_WINDIB
 		case WM_SYSCOMMAND: {
 			const DWORD val = (DWORD) (wParam & 0xFFF0);
 			if ((val == SC_SCREENSAVE) || (val == SC_MONITORPOWER)) {
