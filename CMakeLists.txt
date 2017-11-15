@@ -600,6 +600,9 @@ endif(SDL_VIDEO)
 
 # Platform-specific options and settings
 if(UNIX AND NOT APPLE)
+  # XXX TODO: This should be a try_compile, see configure.in
+  set(SDL_VIDEO_DRIVER_X11_CONST_PARAM_XDATA32 1)
+  # XXX
   if(SDL_AUDIO)
     if(SYSV5 OR SOLARIS OR HPUX)
         set(SDL_AUDIO_DRIVER_SUNAUDIO 1)
@@ -1053,7 +1056,7 @@ listtostr(EXTRA_CFLAGS _EXTRA_CFLAGS)
 set(EXTRA_CFLAGS ${_EXTRA_CFLAGS})
 
 # Compat helpers for the configuration files
-if(NOT WINDOWS OR CYGWIN)
+if(0) # XXX Disabled if(NOT WINDOWS OR CYGWIN)
   # TODO: we need a Windows script, too
   execute_process(COMMAND sh ${SDL_SOURCE_DIR}/build-scripts/updaterev.sh)
 
