@@ -19,7 +19,10 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "SDL_config.h"
+#include "SDL_stdinc.h"
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifndef HAVE_QSORT
 
