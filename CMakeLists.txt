@@ -677,6 +677,15 @@ if(UNIX AND NOT APPLE)
     endif(LINUX)
   endif(SDL_JOYSTICK)
 
+  if(SDL_CDROM)
+    if(LINUX)
+      set(SDL_CDROM_LINUX 1)
+      set(SOURCE_FILES ${SOURCE_FILES}
+        ${SDL_SOURCE_DIR}/src/cdrom/linux/SDL_syscdrom.c)
+      set(HAVE_SDL_CDROM TRUE)
+    endif(LINUX)
+  endif(SDL_CDROM)
+
   CheckPTHREAD()
 
   if(CLOCK_GETTIME)
