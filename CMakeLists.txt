@@ -55,13 +55,19 @@ if(NOT LIBTYPE)
   set(LIBTYPE SHARED)
 endif(NOT LIBTYPE)
 
+# 
+
 # Get the platform
 if(WIN32)
   if(NOT WINDOWS)
     set(WINDOWS TRUE)
   endif(NOT WINDOWS)
 elseif(UNIX AND NOT APPLE)
-  if(CMAKE_SYSTEM_NAME MATCHES ".*Linux")
+  if (EMSCRIPTEN) 
+    # Emscripten system has CMAKE_SYSTEM_NAME="Linux" to pass on existing CMake scripts (that aren't aware of Emscripten) for emulation purposes.
+    # SDL is aware of Emscripten directly, so don't have it act as Linux.
+    set(LINUX FALSE)
+  elseif(CMAKE_SYSTEM_NAME MATCHES ".*Linux")
     set(LINUX TRUE)
   elseif(CMAKE_SYSTEM_NAME MATCHES "kFreeBSD.*")
     set(FREEBSD TRUE)
@@ -669,12 +675,12 @@ if(UNIX AND NOT APPLE)
 
   if(SDL_JOYSTICK)
     CheckUSBHID()   # seems to be BSD specific - limit the test to BSD only?
-    if(LINUX)
+    if(LINUX AND NOT EMSCRIPTEN) ### XXXX REMOVE THIS
       set(SDL_JOYSTICK_LINUX 1)
       file(GLOB JOYSTICK_SOURCES ${SDL_SOURCE_DIR}/src/joystick/linux/*.c)
       set(SOURCE_FILES ${SOURCE_FILES} ${JOYSTICK_SOURCES})
       set(HAVE_SDL_JOYSTICK TRUE)
-    endif(LINUX)
+    endif(LINUX AND NOT EMSCRIPTEN)
   endif(SDL_JOYSTICK)
 
   if(SDL_CDROM)
@@ -1065,7 +1071,8 @@ listtostr(EXTRA_CFLAGS _EXTRA_CFLAGS)
 set(EXTRA_CFLAGS ${_EXTRA_CFLAGS})
 
 # Compat helpers for the configuration files
-if(0) # XXX Disabled if(NOT WINDOWS OR CYGWIN)
+if(0) # XXX Don't run these for now
+if(NOT WINDOWS OR CYGWIN)
   # TODO: we need a Windows script, too
   execute_process(COMMAND sh ${SDL_SOURCE_DIR}/build-scripts/updaterev.sh)
 
@@ -1110,6 +1117,7 @@ if(0) # XXX Disabled if(NOT WINDOWS OR CYGWIN)
   configure_file("${SDL_SOURCE_DIR}/SDL.spec.in"
     "${SDL_BINARY_DIR}/SDL.spec" @ONLY)
 endif(NOT WINDOWS OR CYGWIN)
+endif(0)
 
 ##### Info output #####
 message(STATUS "")
