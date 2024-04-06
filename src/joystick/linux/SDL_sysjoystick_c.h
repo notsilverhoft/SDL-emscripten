@@ -19,7 +19,7 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <linux/input.h>
+#include <../../../../usr/include/linux/input.h>
 
 struct SDL_joylist_item;
 

@@ -22,10 +22,6 @@
 
 #ifdef SDL_JOYSTICK_LINUX
 
-#ifndef SDL_INPUT_LINUXEV
-#error SDL now requires a Linux 2.4+ kernel with /dev/input/event support.
-#endif
-
 /* This is the Linux implementation of the SDL joystick API */
 
 #include <sys/stat.h>
@@ -33,7 +29,7 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <limits.h>             /* For the definition of PATH_MAX */
-#include <linux/joystick.h>
+#include <../include/SDL_joystick.h>
 
 #include "SDL_assert.h"
 #include "SDL_joystick.h"
